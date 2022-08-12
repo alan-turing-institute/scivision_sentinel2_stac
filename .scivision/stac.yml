@@ -1,0 +1,6 @@
+name: sentinel_example
+url: https://github.com/alan-turing-institute/scivision-sentinel-2-stac.git
+import: sentinel_example
+data: sentinel_example
+loader_fn:
+    call: load_images
