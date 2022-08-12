@@ -1,0 +1,7 @@
+dask
+distributed
+folium
+geopandas
+shapely
+pystac-client
+odc-stac
