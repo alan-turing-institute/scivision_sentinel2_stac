@@ -21,6 +21,9 @@ def convert_bounds(bbox, invert_y=False):
     
     
 def load_images():
+    
+    # Since we will plot it on a map we need to use `EPSG:3857` projection
+    crs = "epsg:3857"
 
     cfg = {
         "sentinel-s2-l2a-cogs": {
