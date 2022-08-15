@@ -66,6 +66,6 @@ def load_images():
         stac_cfg=cfg,
         bbox=small_bbox,
     )
-    display(yy.odc.geobox)
+    # display(yy.odc.geobox)
 
     return yy
