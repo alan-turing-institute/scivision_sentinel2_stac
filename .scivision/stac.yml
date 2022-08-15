@@ -1,5 +1,5 @@
 name: scivision_sentinel_2_stac
-url: https://github.com/alan-turing-institute/scivision-sentinel-2-stac.git
+url: https://github.com/alan-turing-institute/scivision_sentinel2_stac.git
 import: scivision_sentinel_2_stac
 data: scivision_sentinel_2_stac
 loader_fn:
