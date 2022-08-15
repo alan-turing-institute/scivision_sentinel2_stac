@@ -9,7 +9,7 @@ with open("requirements.txt") as f:
             requirements.append(stripped)
 
 setup(
-    name="scivision_sentinel_2_stac",
+    name="scivision_sentinel2_stac",
     version="0.0.1",
     description="scivision test plugin",
     author="Ed Chalstrey",
