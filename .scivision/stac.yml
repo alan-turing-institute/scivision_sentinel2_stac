@@ -5,5 +5,4 @@ model: scivision_sentinel2_stac
 args: None
 prediction_fn:
     call: predict
-    args:
-        X: image
+    args: None
