@@ -1,1 +1,1 @@
-from .get_data import load_images
+from .model import load_images
