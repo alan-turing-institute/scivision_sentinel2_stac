@@ -1,5 +1,6 @@
 name: scivision_sentinel2_stac
 url: https://github.com/alan-turing-institute/scivision_sentinel2_stac.git
 import: scivision_sentinel2_stac
-load:
+model: scivision_sentinel2_stac
+predict:
     call: load_images
