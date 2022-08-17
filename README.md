@@ -7,6 +7,9 @@ The plugin can be installed via scivision:
 
 To run a demo showing how the plugin is used, open `demo.py` as a notebook like so:
 
-1. Install scivision as above
-2. Install jupyter and jupytext: `pip install jupyter jupytext`
-3. Run `jupyter notebook` and click on `demo.py`
+1. Create a fresh environment to run the notebook e.g. `conda create --name test_env python=3.10`
+2. Activate the env you created: `conda activate test_env`
+3. Install dask and distributed: `conda install dask distributed`
+4. Install the scivision package: `pip install scivision`
+5. Install jupyter and jupytext: `pip install jupyter jupytext`
+6. Run `jupyter notebook` and click on `demo.py`
