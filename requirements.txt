@@ -1,5 +1,6 @@
 dask
 distributed
+dask[distributed]
 folium
 geopandas
 shapely
