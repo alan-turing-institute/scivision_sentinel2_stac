@@ -24,7 +24,7 @@ class scivision_sentinel2_stac:
             y1, y2 = y2, y1
         return ((y1, x1), (y2, x2))
         
-    def load_images():
+    def predict():
         
         # Since we will plot it on a map we need to use `EPSG:3857` projection
         crs = "epsg:3857"
