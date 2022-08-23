@@ -1,1 +1,1 @@
-from .model import load_images
+from .model import scivision_sentinel2_stac
