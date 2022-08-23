@@ -69,3 +69,7 @@ def load_images():
     # display(yy.odc.geobox)
 
     return yy
+
+
+if __name__ == "__main__":
+    pass
