@@ -11,7 +11,7 @@ from odc.stac import configure_rio, stac_load
 class scivision_sentinel2_stac:
     def __init__(self):
         self.model_name = 'scivision_sentinel2_stac'
-        self.pretrained_model = self.load_images()
+        # self.pretrained_model = self.load_images()
 
     def convert_bounds(bbox, invert_y=False):
         """

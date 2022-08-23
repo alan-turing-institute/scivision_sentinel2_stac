@@ -4,5 +4,5 @@ import: scivision_sentinel2_stac
 model: scivision_sentinel2_stac
 args: None
 prediction_fn:
-    call: predict
+    call: load_images
     args: None
