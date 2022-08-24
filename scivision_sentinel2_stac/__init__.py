@@ -1,1 +1,1 @@
-from .model import scivision_sentinel2_stac
+from .data import scivision_sentinel2_stac
