@@ -1,6 +1,6 @@
 name: scivision_sentinel2_stac
 url: https://github.com/alan-turing-institute/scivision_sentinel2_stac.git
-module: scivision_sentinel2_stac
+import: scivision_sentinel2_stac
 class: scivision_sentinel2_stac
 args: None
 func:
