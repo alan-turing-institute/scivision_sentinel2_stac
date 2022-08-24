@@ -5,6 +5,7 @@ import geopandas as gpd
 import shapely.geometry
 from pystac_client import Client
 from odc.stac import configure_rio, stac_load
+import xarray
 
 
 class scivision_sentinel2_stac:
