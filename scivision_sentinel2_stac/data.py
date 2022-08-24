@@ -1,10 +1,6 @@
-import dask.distributed
-import folium
-import folium.plugins
-import geopandas as gpd
-import shapely.geometry
 from pystac_client import Client
-from odc.stac import configure_rio, stac_load
+from odc.stac import stac_load
+import xarray
 
 
 class scivision_sentinel2_stac:
@@ -25,12 +21,18 @@ class scivision_sentinel2_stac:
     # def list_collections():
     #     return ["sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs"]
         
-    def load_data(resolution=10):
-    # def predict(collection, resolution, bands, crs, bbox):
-        
-        # Since we will plot it on a map we need to use `EPSG:3857` projection
-        crs = "epsg:3857"
-
+    def get_images(
+        collections: list = ["sentinel-s2-l2a-cogs"],
+        resolution: int = 10,
+        bands: list = None,
+        groupby: str = "solar_day",
+        crs: str = "epsg:3857",  # Plotting on a map we requires `EPSG:3857` projection
+        datetime: list = ["2021-09-16"],
+        limit: int = 100,
+        centre_point: tuple = (),
+        size: int = None,
+        cfg: dict = {}
+    ) -> xarray.Dataset:
         # cfg = {
         #     "sentinel-s2-l2a-cogs": {
         #         "assets": {
@@ -44,31 +46,30 @@ class scivision_sentinel2_stac:
         # }
 
         km2deg = 1.0 / 111
-        x, y = (113.887, -25.843)  # Center point of a query
-        r = 100 * km2deg
+        x, y = centre_point  # Center point of a query
+        r = size * km2deg
+
         bbox = (x - r, y - r, x + r, y + r)
 
         catalog = Client.open("https://earth-search.aws.element84.com/v0")
 
         query = catalog.search(
-            collections=["sentinel-s2-l2a-cogs"], datetime=["2021-09-16"], limit=100, bbox=bbox
+            collections=collections, datetime=datetime, limit=limit, bbox=bbox
         )
 
         items = list(query.get_items())
 
-        r = 6.5 * km2deg
-        small_bbox = (x - r, y - r, x + r, y + r)
-
         yy = stac_load(
             items,
-            bands=("B04", "B03", "B02"),
+            bands=bands,
             crs=crs,
-            resolution=res,
+            resolution=resolution,
             chunks={},  # <-- use Dask
-            groupby="solar_day",
+            groupby=groupby,
             # stac_cfg=cfg,
-            bbox=small_bbox,
+            bbox=bbox,
         )
+
         # display(yy.odc.geobox)
 
         return yy
