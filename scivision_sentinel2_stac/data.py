@@ -10,7 +10,7 @@ from odc.stac import configure_rio, stac_load
 
 class scivision_sentinel2_stac:
     def __init__(self):
-        self.model_name = 'scivision_sentinel2_stac'
+        self.data_name = 'scivision_sentinel2_stac'
         self.cfg = {
             "sentinel-s2-l2a-cogs": {
                 "assets": {
