@@ -24,22 +24,26 @@ class scivision_sentinel2_stac:
             y1, y2 = y2, y1
         return ((y1, x1), (y2, x2))
         
+    # def list_collections():
+    #     return ["sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs"]
+        
     def predict():
+    # def predict(collection, resolution, bands, crs, bbox):
         
         # Since we will plot it on a map we need to use `EPSG:3857` projection
         crs = "epsg:3857"
 
-        cfg = {
-            "sentinel-s2-l2a-cogs": {
-                "assets": {
-                    "*": {"data_type": "uint16", "nodata": 0},
-                    "SCL": {"data_type": "uint8", "nodata": 0},
-                    "visual": {"data_type": "uint8", "nodata": 0},
-                },
-                "aliases": {"red": "B04", "green": "B03", "blue": "B02"},
-            },
-            "*": {"warnings": "ignore"},
-        }
+        # cfg = {
+        #     "sentinel-s2-l2a-cogs": {
+        #         "assets": {
+        #             "*": {"data_type": "uint16", "nodata": 0},
+        #             "SCL": {"data_type": "uint8", "nodata": 0},
+        #             "visual": {"data_type": "uint8", "nodata": 0},
+        #         },
+        #         "aliases": {"red": "B04", "green": "B03", "blue": "B02"},
+        #     },
+        #     "*": {"warnings": "ignore"},
+        # }
 
         km2deg = 1.0 / 111
         x, y = (113.887, -25.843)  # Center point of a query
@@ -62,12 +66,12 @@ class scivision_sentinel2_stac:
 
         yy = stac_load(
             items,
-            bands=("red", "green", "blue"),
+            bands=("B04", "B03", "B02"),
             crs=crs,
             resolution=10,
             chunks={},  # <-- use Dask
             groupby="solar_day",
-            stac_cfg=cfg,
+            # stac_cfg=cfg,
             bbox=small_bbox,
         )
         # display(yy.odc.geobox)
