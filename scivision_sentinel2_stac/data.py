@@ -56,10 +56,14 @@ class scivision_sentinel2_stac:
         crs: str = "epsg:3857",  # Plotting on a map we requires `EPSG:3857` projection
         datetime: list = ["2021-09-16"],
         limit: int = 100,
-        bbox: tuple = self.bbox,
-        small_bbox: tuple = self.small_bbox,
+        bbox: tuple = (),
+        small_bbox: tuple = (),
         cfg: dict = self.cfg
     ) -> xarray.Dataset:
+        if bbox == ():
+            bbox = self.bbox
+        if small_bbox == ():
+            small_bbox = self.small_bbox
 
         catalog = Client.open("https://earth-search.aws.element84.com/v0")
 
