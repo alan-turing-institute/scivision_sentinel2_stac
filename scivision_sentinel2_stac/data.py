@@ -55,13 +55,16 @@ class scivision_sentinel2_stac:
         groupby: str = "solar_day",
         crs: str = "epsg:3857",  # Plotting on a map we requires `EPSG:3857` projection
         datetime: list = ["2021-09-16"],
-        limit: int = 100
+        limit: int = 100,
+        bbox: tuple = self.bbox,
+        small_bbox: tuple = self.small_bbox,
+        cfg: dict = self.cfg
     ) -> xarray.Dataset:
 
         catalog = Client.open("https://earth-search.aws.element84.com/v0")
 
         query = catalog.search(
-            collections=collections, datetime=datetime, limit=limit, bbox=self.bbox
+            collections=collections, datetime=datetime, limit=limit, bbox=bbox
         )
 
         items = list(query.get_items())
@@ -76,8 +79,8 @@ class scivision_sentinel2_stac:
             resolution=resolution,
             chunks={},  # <-- use Dask
             groupby=groupby,
-            stac_cfg=self.cfg,
-            bbox=self.small_bbox,
+            stac_cfg=cfg,
+            bbox=small_bbox,
         )
 
         return yy
