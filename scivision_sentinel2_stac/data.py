@@ -57,12 +57,14 @@ class scivision_sentinel2_stac:
         limit: int = 100,
         bbox: tuple = (),
         small_bbox: tuple = (),
-        cfg: dict = self.cfg
+        cfg: dict = {}
     ) -> xarray.Dataset:
         if bbox == ():
             bbox = self.bbox
         if small_bbox == ():
             small_bbox = self.small_bbox
+        if cfg == {}:
+            cfg = self.cfg
 
         catalog = Client.open("https://earth-search.aws.element84.com/v0")
 
