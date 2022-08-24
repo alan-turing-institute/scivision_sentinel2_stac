@@ -11,7 +11,28 @@ from odc.stac import configure_rio, stac_load
 class scivision_sentinel2_stac:
     def __init__(self):
         self.model_name = 'scivision_sentinel2_stac'
-        # self.pretrained_model = self.load_images()
+        self.cfg = {
+            "sentinel-s2-l2a-cogs": {
+                "assets": {
+                    "*": {"data_type": "uint16", "nodata": 0},
+                    "SCL": {"data_type": "uint8", "nodata": 0},
+                    "visual": {"data_type": "uint8", "nodata": 0},
+                },
+                "aliases": {"red": "B04", "green": "B03", "blue": "B02"},
+            },
+            "*": {"warnings": "ignore"},
+        }  # default config
+        self.bands = ("red", "green", "blue")
+        self.bbox, self.small_bbox = default_bbox()
+        
+    def default_bbox():
+        km2deg = 1.0 / 111
+        x, y = (113.887, -25.843)  # Center point of a query
+        r = 100 * km2deg
+        bbox = (x - r, y - r, x + r, y + r)
+        r = 6.5 * km2deg
+        small_bbox = (x - r, y - r, x + r, y + r)
+        return bbox, small_bbox
 
     def convert_bounds(bbox, invert_y=False):
         """
@@ -27,38 +48,20 @@ class scivision_sentinel2_stac:
     # def list_collections():
     #     return ["sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs"]
         
-    # def get_images(
-    #     collection: os.PathLike,
-    #     branch: str = "main",
-    #     allow_install: bool = False
-    # ) -> xarray.Dataset:
-    # def predict(collection, resolution, bands, crs, bbox):
-    def get_images():
-        
-        # Since we will plot it on a map we need to use `EPSG:3857` projection
-        crs = "epsg:3857"
-
-        # cfg = {
-        #     "sentinel-s2-l2a-cogs": {
-        #         "assets": {
-        #             "*": {"data_type": "uint16", "nodata": 0},
-        #             "SCL": {"data_type": "uint8", "nodata": 0},
-        #             "visual": {"data_type": "uint8", "nodata": 0},
-        #         },
-        #         "aliases": {"red": "B04", "green": "B03", "blue": "B02"},
-        #     },
-        #     "*": {"warnings": "ignore"},
-        # }
-
-        km2deg = 1.0 / 111
-        x, y = (113.887, -25.843)  # Center point of a query
-        r = 100 * km2deg
-        bbox = (x - r, y - r, x + r, y + r)
+    def get_images(
+        collections: list = ["sentinel-s2-l2a-cogs"],
+        resolution: int = 10,
+        bands: bool = False,
+        groupby: str = "solar_day",
+        crs: str = "epsg:3857",  # Plotting on a map we requires `EPSG:3857` projection
+        datetime: list = ["2021-09-16"],
+        limit: int = 100
+    ) -> xarray.Dataset:
 
         catalog = Client.open("https://earth-search.aws.element84.com/v0")
 
         query = catalog.search(
-            collections=["sentinel-s2-l2a-cogs"], datetime=["2021-09-16"], limit=100, bbox=bbox
+            collections=collections, datetime=datetime, limit=limit, bbox=self.bbox
         )
 
         items = list(query.get_items())
@@ -66,20 +69,16 @@ class scivision_sentinel2_stac:
         # Convert STAC items into a GeoJSON FeatureCollection
         stac_json = query.get_all_items_as_dict()
 
-        r = 6.5 * km2deg
-        small_bbox = (x - r, y - r, x + r, y + r)
-
         yy = stac_load(
             items,
-            bands=("B04", "B03", "B02"),
+            bands=self.bands,
             crs=crs,
-            resolution=10,
+            resolution=resolution,
             chunks={},  # <-- use Dask
-            groupby="solar_day",
-            # stac_cfg=cfg,
-            bbox=small_bbox,
+            groupby=groupby,
+            stac_cfg=self.cfg,
+            bbox=self.small_bbox,
         )
-        # display(yy.odc.geobox)
 
         return yy
 
