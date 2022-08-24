@@ -4,5 +4,5 @@ import: scivision_sentinel2_stac
 class: scivision_sentinel2_stac
 args: None
 func:
-    call: predict
+    call: get_images
     args: None

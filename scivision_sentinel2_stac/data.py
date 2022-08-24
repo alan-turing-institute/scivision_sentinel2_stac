@@ -27,8 +27,13 @@ class scivision_sentinel2_stac:
     # def list_collections():
     #     return ["sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs"]
         
-    def predict():
+    # def get_images(
+    #     collection: os.PathLike,
+    #     branch: str = "main",
+    #     allow_install: bool = False
+    # ) -> xarray.Dataset:
     # def predict(collection, resolution, bands, crs, bbox):
+    def get_images():
         
         # Since we will plot it on a map we need to use `EPSG:3857` projection
         crs = "epsg:3857"
