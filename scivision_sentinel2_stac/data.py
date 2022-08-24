@@ -3,15 +3,13 @@ import folium
 import folium.plugins
 import geopandas as gpd
 import shapely.geometry
-from IPython.display import HTML, display
 from pystac_client import Client
 from odc.stac import configure_rio, stac_load
 
 
 class scivision_sentinel2_stac:
     def __init__(self):
-        self.model_name = 'scivision_sentinel2_stac'
-        # self.pretrained_model = self.load_images()
+        self.data_name = 'scivision_sentinel2_stac'
 
     def convert_bounds(bbox, invert_y=False):
         """
@@ -27,7 +25,7 @@ class scivision_sentinel2_stac:
     # def list_collections():
     #     return ["sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs"]
         
-    def predict():
+    def load_data(resolution=10):
     # def predict(collection, resolution, bands, crs, bbox):
         
         # Since we will plot it on a map we need to use `EPSG:3857` projection
@@ -58,9 +56,6 @@ class scivision_sentinel2_stac:
 
         items = list(query.get_items())
 
-        # Convert STAC items into a GeoJSON FeatureCollection
-        stac_json = query.get_all_items_as_dict()
-
         r = 6.5 * km2deg
         small_bbox = (x - r, y - r, x + r, y + r)
 
@@ -68,7 +63,7 @@ class scivision_sentinel2_stac:
             items,
             bands=("B04", "B03", "B02"),
             crs=crs,
-            resolution=10,
+            resolution=res,
             chunks={},  # <-- use Dask
             groupby="solar_day",
             # stac_cfg=cfg,
