@@ -22,17 +22,6 @@ class scivision_sentinel2_stac:
         size: int = None,
         cfg: dict = {}
     ) -> xarray.Dataset:
-        # cfg = {
-        #     "sentinel-s2-l2a-cogs": {
-        #         "assets": {
-        #             "*": {"data_type": "uint16", "nodata": 0},
-        #             "SCL": {"data_type": "uint8", "nodata": 0},
-        #             "visual": {"data_type": "uint8", "nodata": 0},
-        #         },
-        #         "aliases": {"red": "B04", "green": "B03", "blue": "B02"},
-        #     },
-        #     "*": {"warnings": "ignore"},
-        # }
 
         km2deg = 1.0 / 111
         x, y = centre_point  # Center point of a query
@@ -58,8 +47,6 @@ class scivision_sentinel2_stac:
             # stac_cfg=cfg,
             bbox=bbox,
         )
-
-        # display(yy.odc.geobox)
 
         return yy
 
