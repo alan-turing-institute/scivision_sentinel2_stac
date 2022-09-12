@@ -11,20 +11,7 @@ import xarray
 class scivision_sentinel2_stac:
     def __init__(self):
         self.data_name = 'scivision_sentinel2_stac'
-        self.cfg = {
-            "sentinel-s2-l2a-cogs": {
-                "assets": {
-                    "*": {"data_type": "uint16", "nodata": 0},
-                    "SCL": {"data_type": "uint8", "nodata": 0},
-                    "visual": {"data_type": "uint8", "nodata": 0},
-                },
-                "aliases": {"red": "B04", "green": "B03", "blue": "B02"},
-            },
-            "*": {"warnings": "ignore"},
-        }  # default config
-        self.bands = ("red", "green", "blue")
-        self.bbox, self.small_bbox = default_bbox()
-        
+
     def default_bbox():
         km2deg = 1.0 / 111
         x, y = (113.887, -25.843)  # Center point of a query
@@ -60,19 +47,30 @@ class scivision_sentinel2_stac:
         small_bbox: tuple = (),
         cfg: dict = {}
     ) -> xarray.Dataset:
-        if bbox == ():
-            bbox = self.bbox
-        if small_bbox == ():
-            small_bbox = self.small_bbox
+        
+        # Default values:
+        if bands:
+            bands = ("red", "green", "blue")
+        if bbox == () or small_bbox == ():
+            bbox, small_bbox = default_bbox()
         if cfg == {}:
-            cfg = self.cfg
-
+            cfg = {
+                "sentinel-s2-l2a-cogs": {
+                    "assets": {
+                        "*": {"data_type": "uint16", "nodata": 0},
+                        "SCL": {"data_type": "uint8", "nodata": 0},
+                        "visual": {"data_type": "uint8", "nodata": 0},
+                    },
+                    "aliases": {"red": "B04", "green": "B03", "blue": "B02"},
+                },
+                "*": {"warnings": "ignore"},
+            }  # default config
+        
+        # Navigate the STAC catalog
         catalog = Client.open("https://earth-search.aws.element84.com/v0")
-
         query = catalog.search(
             collections=collections, datetime=datetime, limit=limit, bbox=bbox
         )
-
         items = list(query.get_items())
 
         # Convert STAC items into a GeoJSON FeatureCollection
@@ -80,7 +78,7 @@ class scivision_sentinel2_stac:
 
         yy = stac_load(
             items,
-            bands=self.bands,
+            bands=bands,
             crs=crs,
             resolution=resolution,
             chunks={},  # <-- use Dask
