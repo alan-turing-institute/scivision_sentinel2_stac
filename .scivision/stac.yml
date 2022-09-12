@@ -5,5 +5,4 @@ class: scivision_sentinel2_stac
 args: None
 func:
     call: get_images
-    args:
-        X: image
+    args: None
