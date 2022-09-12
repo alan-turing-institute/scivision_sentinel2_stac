@@ -49,7 +49,7 @@ class scivision_sentinel2_stac:
             return bbox, small_bbox
         
         # Default values:
-        if bands:
+        if not bands:
             bands = ("red", "green", "blue")
         if bbox == () or small_bbox == ():
             bbox, small_bbox = default_bbox()
