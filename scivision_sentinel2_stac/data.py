@@ -12,25 +12,16 @@ class scivision_sentinel2_stac:
     def __init__(self):
         self.data_name = 'scivision_sentinel2_stac'
 
-    def default_bbox():
-        km2deg = 1.0 / 111
-        x, y = (113.887, -25.843)  # Center point of a query
-        r = 100 * km2deg
-        bbox = (x - r, y - r, x + r, y + r)
-        r = 6.5 * km2deg
-        small_bbox = (x - r, y - r, x + r, y + r)
-        return bbox, small_bbox
-
-    def convert_bounds(bbox, invert_y=False):
-        """
-        Helper method for changing bounding box representation to leaflet notation
-
-        ``(lon1, lat1, lon2, lat2) -> ((lat1, lon1), (lat2, lon2))``
-        """
-        x1, y1, x2, y2 = bbox
-        if invert_y:
-            y1, y2 = y2, y1
-        return ((y1, x1), (y2, x2))
+    # def convert_bounds(bbox, invert_y=False):
+    #     """
+    #     Helper method for changing bounding box representation to leaflet notation
+    # 
+    #     ``(lon1, lat1, lon2, lat2) -> ((lat1, lon1), (lat2, lon2))``
+    #     """
+    #     x1, y1, x2, y2 = bbox
+    #     if invert_y:
+    #         y1, y2 = y2, y1
+    #     return ((y1, x1), (y2, x2))
         
     # def list_collections():
     #     return ["sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs"]
@@ -47,6 +38,15 @@ class scivision_sentinel2_stac:
         small_bbox: tuple = (),
         cfg: dict = {}
     ) -> xarray.Dataset:
+    
+        def default_bbox():
+            km2deg = 1.0 / 111
+            x, y = (113.887, -25.843)  # Center point of a query
+            r = 100 * km2deg
+            bbox = (x - r, y - r, x + r, y + r)
+            r = 6.5 * km2deg
+            small_bbox = (x - r, y - r, x + r, y + r)
+            return bbox, small_bbox
         
         # Default values:
         if bands:
