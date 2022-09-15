@@ -27,6 +27,7 @@ class scivision_sentinel2_stac:
     #     return ["sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs", "sentinel-s2-l2a-cogs"]
         
     def get_images(
+        catalog: str = "https://earth-search.aws.element84.com/v0"
         collections: list = ["sentinel-s2-l2a-cogs"],
         resolution: int = 10,
         bands: bool = False,
@@ -67,7 +68,6 @@ class scivision_sentinel2_stac:
             }  # default config
         
         # Navigate the STAC catalog
-        catalog = Client.open("https://earth-search.aws.element84.com/v0")
         query = catalog.search(
             collections=collections, datetime=datetime, limit=limit, bbox=bbox
         )
