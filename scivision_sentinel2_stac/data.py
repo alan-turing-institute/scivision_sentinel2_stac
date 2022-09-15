@@ -68,6 +68,7 @@ class scivision_sentinel2_stac:
             }  # default config
         
         # Navigate the STAC catalog
+        catalog = Client.open(catalog)
         query = catalog.search(
             collections=collections, datetime=datetime, limit=limit, bbox=bbox
         )
